@@ -6,14 +6,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.sysdig.com            
-    chart: shield                                
-    targetRevision: 1.23.2                   
+    repoURL: https://charts.sysdig.com
+    chart: shield
+    targetRevision: 1.23.2
     helm:
       valueFiles:
-        - sysdig-agent/values.yaml                             
-      parameters: []                               
-    path: ""           
+        - sysdig-agent/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: sysdig-agent
