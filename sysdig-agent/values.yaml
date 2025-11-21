@@ -4,7 +4,7 @@ cluster_config:
 sysdig_endpoint:
   region: us4 # Sysdig Secure instance location region. Defaults to `custom` if not specified.
   access_key_existing_secret: sysdig-access-key-secret
-
+  secure_api_token_existing_secret: sysdig-api-token
 features:
   kubernetes_metadata:
     enabled: true # Enable Kubernetes metadata collection for the cluster
