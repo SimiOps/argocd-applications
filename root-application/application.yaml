@@ -6,12 +6,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.sysdig.com
+  repoURL: https://github.com/SimiOps/argocd-applications
+  targetRevision: main
+  path: sysdig-agent/
+  helm:
+    valueFiles:
+      - values.yaml
     chart: shield
-    targetRevision: 1.23.2
-    helm:
-      valueFiles:
-        - sysdig-agent/values.yaml
+    repoURL: https://charts.sysdig.com
+    version: "1.23.2"
   destination:
     server: https://kubernetes.default.svc
     namespace: sysdig-agent
