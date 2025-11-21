@@ -37,7 +37,7 @@ spec:
     path: manifests/result/result.yaml
   destination:
     server: https://kubernetes.default.svc
-    namespace: vote-stack
+    namespace: production
   syncPolicy:
     automated:
       prune: true
