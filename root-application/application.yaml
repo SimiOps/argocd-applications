@@ -34,7 +34,7 @@ spec:
   source:
     repoURL: https://github.com/Santiagososs/example-voting-app
     targetRevision: main
-    path: manifests/result/result.yaml
+    path: manifests/result
   destination:
     server: https://kubernetes.default.svc
     namespace: production
