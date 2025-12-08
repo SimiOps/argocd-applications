@@ -10,8 +10,7 @@ features:
     enabled: true # Enable Kubernetes metadata collection for the cluster
   admission_control:
     enabled: true
-  detections:
-    file_integrity_monitoring: true
+
   monitor:
     app_checks:
       enabled: true
@@ -51,6 +50,8 @@ features:
       enabled: true # Enable machine learning policies
     kubernetes_audit:
       enabled: true # Enable Kubernetes audit logging
+    file_integrity_monitoring:
+      enabled: true
 
   investigations:
     activity_audit:
