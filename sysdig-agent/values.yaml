@@ -70,7 +70,7 @@ features:
     rapid_response:
       enabled: false
     response_actions:
-      enabled: false
+      enabled: true
 
 host:
   driver: universal_ebpf # Driver for the host agent (Accepted Values: kmod, legacy_ebpf, universal_ebpf (Linux Kernel ≥ 5. 8))
