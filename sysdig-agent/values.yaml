@@ -68,11 +68,11 @@ features:
   
 
   respond:
-  rapid_response:
-    enabled: true
-    password: "T3STP4SSW0RD!"
-  response_actions:
-    enabled: true
+    rapid_response:
+      enabled: true
+      password: "T3STP4SSW0RD!"
+    response_actions:
+      enabled: true
 
 host:
   driver: universal_ebpf # Driver for the host agent (Accepted Values: kmod, legacy_ebpf, universal_ebpf (Linux Kernel ≥ 5. 8))
