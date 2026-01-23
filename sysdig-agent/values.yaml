@@ -70,7 +70,8 @@ features:
   respond:
     rapid_response:
       enabled: true
-      password: "T3STP4SSW0RD!"
+      password_existing_secret: "sysdig-rr-password"
+      password_existing_secret_key: "password"
     response_actions:
       enabled: true
 
