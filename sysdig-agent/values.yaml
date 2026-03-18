@@ -54,6 +54,8 @@ features:
       #http_port: 7765
     file_integrity_monitoring:
       enabled: true
+    feature:
+      mode: secure_light
 
   validatingwebhookconfiguration:
     create: true
@@ -82,11 +84,6 @@ host:
   additional_settings:
     security:
       enabled: true
-    feature:
-      mode: secure_light
-    log:
-      console_priority: debug  
-      file_priority: debug
 
 cluster:
   resources:
