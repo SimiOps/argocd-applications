@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://charts.sysdig.com
     chart: shield
-    targetRevision: "1.25.2"
+    targetRevision: "1.30.0"
     helm:
       valueFiles:
         - https://raw.githubusercontent.com/SimiOps/argocd-applications/main/sysdig-agent/values.yaml
