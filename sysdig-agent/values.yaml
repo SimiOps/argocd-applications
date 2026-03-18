@@ -40,7 +40,6 @@ features:
       enabled: true # Enable container vulnerability management
     in_use:
       enabled: true # Enable retrieval of in-use packages
-    integration_enabled: true
 
   detections:
     drift_control:
