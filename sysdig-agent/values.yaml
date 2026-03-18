@@ -83,6 +83,8 @@ host:
   additional_settings:
     security:
       enabled: true
+    feature:
+      mode: secure_light
 
 cluster:
   resources:
