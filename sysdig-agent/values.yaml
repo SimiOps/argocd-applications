@@ -84,7 +84,9 @@ host:
       enabled: true
     feature:
       mode: secure_light
-    log_level: debug
+    log:
+      console_priority: debug  
+      file_priority: debug
 
 cluster:
   resources:
