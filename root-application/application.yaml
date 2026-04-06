@@ -90,3 +90,30 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: event-generator
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://falcosecurity.github.io/charts
+    chart: event-generator
+    targetRevision: "0.12.0" 
+    helm:
+      parameters:
+        - name: "config.actions"
+          value: ""
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: event-generator
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
