@@ -103,7 +103,7 @@ spec:
   source:
     repoURL: https://falcosecurity.github.io/charts
     chart: event-generator
-    targetRevision: "0.10.0" 
+    targetRevision: "0.3.4" 
     helm:
       parameters:
         - name: "config.actions"
