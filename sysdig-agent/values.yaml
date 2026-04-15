@@ -56,7 +56,7 @@ features:
       enabled: true
 
   validatingwebhookconfiguration:
-    create: true
+    create: false
 
   investigations:
     activity_audit:
@@ -96,3 +96,5 @@ cluster:
       # The memory limit for the cluster shield
       memory: 1536Mi
   replica_count: 1
+  validatingwebhookconfiguration:
+    create: false
