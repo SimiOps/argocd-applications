@@ -21,6 +21,26 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+  ignoreDifferences:
+    - kind: Secret
+      name: sysdig-agent-shield-cluster
+      jsonPointers:
+        - /data
+    - kind: Secret
+      name: sysdig-agent-shield-cluster-tls-certificates
+      jsonPointers:
+        - /data
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      jqPathExpressions:
+        - .webhooks[].clientConfig.caBundle
+    - group: apps
+      kind: Deployment
+      name: sysdig-agent-shield-cluster
+      jsonPointers:
+        - /spec/template/metadata/annotations/checksum~1webhook
+
+
 
 ---
 
