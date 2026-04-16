@@ -55,9 +55,6 @@ features:
     file_integrity_monitoring:
       enabled: true
 
-  validatingwebhookconfiguration:
-    create: false
-
   investigations:
     activity_audit:
       enabled: true # Enable activity audit
