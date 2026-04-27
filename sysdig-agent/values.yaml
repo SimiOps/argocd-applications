@@ -79,6 +79,10 @@ host:
   additional_settings:
     security:
       enabled: true
+    metrics_filter:
+      - exclude: "messenger_decoder_message_size_bytes_bucket"
+      - include: "kspm_collector_request_duration_seconds_bucket"
+
 
 cluster:
   resources:
