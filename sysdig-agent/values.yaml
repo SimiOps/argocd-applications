@@ -18,8 +18,120 @@ features:
       enabled: true
     prometheus:
       enabled: true
-      # The content of the prometheus.yaml file
-      prometheus_yaml: {}
+      prometheus_yaml:
+      global:
+        scrape_interval: 10s
+      scrape_configs:
+        - job_name: 'k8s-pods'
+          sample_limit: 40000
+          tls_config:
+            insecure_skip_verify: true
+          kubernetes_sd_configs:
+            - role: pod
+          relabel_configs:
+            # Trying to ensure we only scrape local targets
+            # __HOSTIPS__ is replaced by promscrape with a regex list of the IP addresses
+            # of all the active network interfaces on the host
+            - action: keep
+              source_labels: [__meta_kubernetes_pod_host_ip]
+              regex: __HOSTIPS__
+            - action: keep
+              source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+              regex: true
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_annotation_promcat_sysdig_com_omit]
+              regex: true
+            - source_labels: [__meta_kubernetes_pod_phase]
+              action: keep
+              regex: Running
+            # Drop for nginx-ingress
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: 'controller|nginx-ingress-controller'
+            # Drop for ceph
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name, __meta_kubernetes_pod_annotation_prometheus_io_port]
+              separator: ;
+              regex: (chown-container-data-dir|log-collector|mgr|watch-active);9283
+            # Drop for consul
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port]
+              regex: '20200|8500'
+            # Drop for istio
+            - action: replace
+              source_labels: [__meta_kubernetes_pod_annotationpresent_sidecar_istio_io_status]
+              target_label: __tmp_pod_has_istio
+              regex: 'true'
+              replacement: 'true'
+            - action: drop
+              source_labels: [__tmp_pod_has_istio, __meta_kubernetes_pod_container_name]
+              regex: 'true;(discovery)|(.{0}$)'
+            # Drop for opa
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: 'manager.*'
+            # Drop for kafka
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: 'kafka-jmx-exporter|kafka-exporter'
+            # Drop for keda
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: 'keda-operator-metrics-apiserver'
+            # Drop for ntp
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: 'ntp-exporter'
+            # Drop for openshift-state-metrics
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: 'openshift-state-metrics'
+            # Drop for portworx
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: 'portworx'
+            # Drop for rabbitmq
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_container_name]
+              regex: '(rabbitmq|prepare-plugins-dir)'
+            - action: drop
+              source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_port]
+              regex: '15691'
+            # Drop for Sysdig Admission Controller
+            - action: drop
+              source_labels:
+                - __meta_kubernetes_pod_container_name
+                - __meta_kubernetes_pod_annotation_prometheus_io_port
+              regex: admission-controller;(8080|5000)
+            - action: replace
+              source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scheme]
+              target_label: __scheme__
+              regex: (https?)
+            - action: replace
+              source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+              target_label: __metrics_path__
+              regex: (.+)
+            - action: replace
+              source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+              regex: ([^:]+)(?::\d+)?;(\d+)
+              replacement: $1:$2
+              target_label: __address__
+            # Holding on to pod-id and container name so we can associate the metrics
+            # with the container (and cluster hierarchy)
+            - action: replace
+              source_labels: [__meta_kubernetes_pod_uid]
+              target_label: sysdig_k8s_pod_uid
+            - action: replace
+              source_labels: [__meta_kubernetes_pod_container_name]
+              target_label: sysdig_k8s_pod_container_name
+          # -------------------------------------------------------
+          # Drop high-cardinality / unwanted metrics
+          # to reduce timeseries count in Sysdig Monitor
+          # -------------------------------------------------------
+          metric_relabel_configs:
+            - action: drop
+              source_labels: [__name__]
+              regex: load_image_result
     statsd:
       enabled: true
     kubernetes_events:
