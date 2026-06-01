@@ -139,3 +139,38 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: x509-certificate-exporter
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.enix.io
+    chart: x509-certificate-exporter
+    targetRevision: "4.1.0"    
+    helm:
+      valuesObject:
+        secretsExporter:
+          podAnnotations:
+            prometheus.io/scrape: "true"
+            prometheus.io/port: "9793"
+            prometheus.io/path: "/metrics"
+        prometheusServiceMonitor:
+          create: false
+        prometheusRules:
+          create: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: x509-exporter
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
