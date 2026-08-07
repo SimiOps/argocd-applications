@@ -1,0 +1,352 @@
+# GERADO POR hack/gen-workloads.sh — NAO EDITE A MAO.
+# Fonte: hack/images.txt   |   Tier 2: Servicos e app servers — CVEs nomeados e conhecidos
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-114
+  labels:
+    app.kubernetes.io/name: nginx-114
+    app.kubernetes.io/part-of: vuln-lab
+    vuln-lab/tier: "2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    vuln-lab/image-size: "60MB"
+    vuln-lab/note: "CVEs de nginx conhecidos"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: nginx-114
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx-114
+        app.kubernetes.io/part-of: vuln-lab
+        vuln-lab/tier: "2"
+    spec:
+      priorityClassName: vuln-lab-low
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      containers:
+        - name: idle
+          image: nginx:1.14
+          imagePullPolicy: IfNotPresent
+          # 'sleep infinity' nao existe no busybox de imagens antigas; este loop
+          # funciona em qualquer /bin/sh (glibc, musl, dash).
+          command: ["/bin/sh", "-c", "while :; do sleep 3600; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 48Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: httpd-2438
+  labels:
+    app.kubernetes.io/name: httpd-2438
+    app.kubernetes.io/part-of: vuln-lab
+    vuln-lab/tier: "2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    vuln-lab/image-size: "90MB"
+    vuln-lab/note: "Apache httpd com CVEs High"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: httpd-2438
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: httpd-2438
+        app.kubernetes.io/part-of: vuln-lab
+        vuln-lab/tier: "2"
+    spec:
+      priorityClassName: vuln-lab-low
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      containers:
+        - name: idle
+          image: httpd:2.4.38
+          imagePullPolicy: IfNotPresent
+          # 'sleep infinity' nao existe no busybox de imagens antigas; este loop
+          # funciona em qualquer /bin/sh (glibc, musl, dash).
+          command: ["/bin/sh", "-c", "while :; do sleep 3600; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 48Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-503
+  labels:
+    app.kubernetes.io/name: redis-503
+    app.kubernetes.io/part-of: vuln-lab
+    vuln-lab/tier: "2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    vuln-lab/image-size: "25MB"
+    vuln-lab/note: "CVEs de Redis + Lua"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: redis-503
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: redis-503
+        app.kubernetes.io/part-of: vuln-lab
+        vuln-lab/tier: "2"
+    spec:
+      priorityClassName: vuln-lab-low
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      containers:
+        - name: idle
+          image: redis:5.0.3-alpine
+          imagePullPolicy: IfNotPresent
+          # 'sleep infinity' nao existe no busybox de imagens antigas; este loop
+          # funciona em qualquer /bin/sh (glibc, musl, dash).
+          command: ["/bin/sh", "-c", "while :; do sleep 3600; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 48Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-96
+  labels:
+    app.kubernetes.io/name: postgres-96
+    app.kubernetes.io/part-of: vuln-lab
+    vuln-lab/tier: "2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    vuln-lab/image-size: "35MB"
+    vuln-lab/note: "Postgres EOL"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgres-96
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: postgres-96
+        app.kubernetes.io/part-of: vuln-lab
+        vuln-lab/tier: "2"
+    spec:
+      priorityClassName: vuln-lab-low
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      containers:
+        - name: idle
+          image: postgres:9.6-alpine
+          imagePullPolicy: IfNotPresent
+          # 'sleep infinity' nao existe no busybox de imagens antigas; este loop
+          # funciona em qualquer /bin/sh (glibc, musl, dash).
+          command: ["/bin/sh", "-c", "while :; do sleep 3600; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 48Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-56
+  labels:
+    app.kubernetes.io/name: mysql-56
+    app.kubernetes.io/part-of: vuln-lab
+    vuln-lab/tier: "2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    vuln-lab/image-size: "250MB"
+    vuln-lab/note: "MySQL EOL, volume alto de CVEs"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mysql-56
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mysql-56
+        app.kubernetes.io/part-of: vuln-lab
+        vuln-lab/tier: "2"
+    spec:
+      priorityClassName: vuln-lab-low
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      containers:
+        - name: idle
+          image: mysql:5.6
+          imagePullPolicy: IfNotPresent
+          # 'sleep infinity' nao existe no busybox de imagens antigas; este loop
+          # funciona em qualquer /bin/sh (glibc, musl, dash).
+          command: ["/bin/sh", "-c", "while :; do sleep 3600; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 48Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-8532
+  labels:
+    app.kubernetes.io/name: tomcat-8532
+    app.kubernetes.io/part-of: vuln-lab
+    vuln-lab/tier: "2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    vuln-lab/image-size: "110MB"
+    vuln-lab/note: "Ghostcat CVE-2020-1938"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tomcat-8532
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tomcat-8532
+        app.kubernetes.io/part-of: vuln-lab
+        vuln-lab/tier: "2"
+    spec:
+      priorityClassName: vuln-lab-low
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      containers:
+        - name: idle
+          image: tomcat:8.5.32-jre8-alpine
+          imagePullPolicy: IfNotPresent
+          # 'sleep infinity' nao existe no busybox de imagens antigas; este loop
+          # funciona em qualquer /bin/sh (glibc, musl, dash).
+          command: ["/bin/sh", "-c", "while :; do sleep 3600; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 48Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy-188
+  labels:
+    app.kubernetes.io/name: haproxy-188
+    app.kubernetes.io/part-of: vuln-lab
+    vuln-lab/tier: "2"
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+    vuln-lab/image-size: "30MB"
+    vuln-lab/note: "CVEs de HTTP smuggling"
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: haproxy-188
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: haproxy-188
+        app.kubernetes.io/part-of: vuln-lab
+        vuln-lab/tier: "2"
+    spec:
+      priorityClassName: vuln-lab-low
+      terminationGracePeriodSeconds: 1
+      automountServiceAccountToken: false
+      enableServiceLinks: false
+      containers:
+        - name: idle
+          image: haproxy:1.8.8-alpine
+          imagePullPolicy: IfNotPresent
+          # 'sleep infinity' nao existe no busybox de imagens antigas; este loop
+          # funciona em qualquer /bin/sh (glibc, musl, dash).
+          command: ["/bin/sh", "-c", "while :; do sleep 3600; done"]
+          resources:
+            requests:
+              cpu: 1m
+              memory: 8Mi
+            limits:
+              cpu: 50m
+              memory: 48Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]

@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: vuln-lab
+
+commonLabels:
+  app.kubernetes.io/managed-by: argocd
+  app.kubernetes.io/part-of: vuln-lab
+
+resources:
+  - namespace.yaml
+  - priorityclass.yaml
+
+  # ---- Ligue os tiers conforme o disco disponivel no node ----
+  # Custo de disco acumulado (imagens, nao RAM):
+  #   tier0  ~465MB    tier1  ~585MB    tier2  ~600MB    tier3  ~1.1GB
+  # RAM em regime: ~5-10MB por pod, entao ~250MB com tudo ligado.
+  #
+  # Comece so com o tier0, confirme que os dados aparecem na Sysdig,
+  # e va descomentando um tier por vez.
+
+  - tier0-eol-distros.yaml
+  - tier1-language-runtimes.yaml
+  - tier2-services.yaml
+
+  # tier3 e o mais pesado (~1.1GB de disco) mas o mais valioso: traz CVEs que
+  # estao na CISA KEV, o que popula o filtro "Actually Exploitable" / "In Use"
+  # e os campos de EPSS na Sysdig. Descomente quando tier0-2 estiverem estaveis.
+  # - tier3-kev-showcase.yaml

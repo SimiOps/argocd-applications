@@ -181,3 +181,27 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vuln-lab
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/SimiOps/argocd-applications
+    targetRevision: main
+    path: vuln-lab/manifests
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vuln-lab
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=false
+      - PruneLast=true

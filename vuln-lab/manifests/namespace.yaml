@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vuln-lab
+  labels:
+    app.kubernetes.io/part-of: vuln-lab
+    # Privileged para nao brigar com imagens antigas que rodam como root.
+    # Isso tambem gera achados de Posture legitimos, o que e desejavel no lab.
+    pod-security.kubernetes.io/enforce: privileged
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+---
+# Teto de consumo do lab inteiro. Se voce adicionar imagens demais, o
+# ResourceQuota falha o agendamento em vez de derrubar o node ou o agent.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: vuln-lab-quota
+  namespace: vuln-lab
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  hard:
+    requests.cpu: "200m"
+    requests.memory: 512Mi
+    limits.cpu: "2"
+    limits.memory: 1536Mi
+    pods: "40"

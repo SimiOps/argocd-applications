@@ -1,0 +1,38 @@
+# Catálogo de imagens do vuln-lab
+#
+# Formato:  <tier>|<nome-do-workload>|<imagem>|<disco-aprox>|<nota>
+#
+# tier 0 = distros EOL (base de CVEs de OS, muito leve)
+# tier 1 = runtimes de linguagem (CVEs de app-level / bibliotecas)
+# tier 2 = serviços e app servers (CVEs nomeados e conhecidos)
+# tier 3 = showcase KEV / "actually exploitable" (opt-in, mais pesado)
+#
+# Adicione/remova linhas e rode ./hack/gen-workloads.sh para regenerar os manifests.
+
+0|debian-9-stretch|debian:9|45MB|EOL 2022, centenas de CVEs de OS
+0|debian-8-jessie|debian:8|50MB|EOL 2020, base de CVEs ainda maior
+0|ubuntu-1604-xenial|ubuntu:16.04|40MB|EOL, muitos CVEs High/Critical
+0|ubuntu-1404-trusty|ubuntu:14.04|65MB|EOL 2019, extremo em volume de CVEs
+0|alpine-39|alpine:3.9|5MB|musl/apk antigos, custo de disco quase zero
+0|centos-7|centos:7|200MB|EOL 2024, base RPM classica em demos
+0|amazonlinux-2018|amazonlinux:2018.03|60MB|base RPM alternativa, EOL
+
+1|python-36|python:3.6-slim|60MB|CPython EOL + libs de sistema
+1|node-12|node:12-alpine|40MB|Node EOL, CVEs de runtime e OpenSSL
+1|node-8|node:8-alpine|30MB|Node muito antigo, alto volume
+1|ruby-25|ruby:2.5-slim|70MB|Ruby EOL
+1|php-72-apache|php:7.2-apache|180MB|PHP EOL + Apache antigo
+1|golang-113|golang:1.13-alpine|120MB|toolchain Go com CVEs de stdlib
+1|openjdk-8u212|openjdk:8u212-jre-alpine|85MB|JRE antigo, CVEs Java
+
+2|nginx-114|nginx:1.14|60MB|CVEs de nginx conhecidos
+2|httpd-2438|httpd:2.4.38|90MB|Apache httpd com CVEs High
+2|redis-503|redis:5.0.3-alpine|25MB|CVEs de Redis + Lua
+2|postgres-96|postgres:9.6-alpine|35MB|Postgres EOL
+2|mysql-56|mysql:5.6|250MB|MySQL EOL, volume alto de CVEs
+2|tomcat-8532|tomcat:8.5.32-jre8-alpine|110MB|Ghostcat CVE-2020-1938
+2|haproxy-188|haproxy:1.8.8-alpine|30MB|CVEs de HTTP smuggling
+
+3|log4shell-app|ghcr.io/christophetd/log4shell-vulnerable-app:latest|250MB|CVE-2021-44228, esta na CISA KEV
+3|struts2-cve-2017-5638|piesecurity/apache-struts2-cve-2017-5638:latest|350MB|CVE-2017-5638, KEV, Equifax
+3|dvwa|vulnerables/web-dvwa:latest|500MB|PHP/MySQL cheio de CVEs, bom para volume

@@ -1,0 +1,13 @@
+# Prioridade negativa: num node de 4GB, se houver pressao de memoria o kubelet
+# despeja os pods do lab ANTES do sysdig-agent, do node-analyzer ou do argocd.
+# preemptionPolicy Never garante que o lab nunca expulse nada de ninguem.
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: vuln-lab-low
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+value: -10
+preemptionPolicy: Never
+globalDefault: false
+description: "Workloads descartaveis do vuln-lab. Primeiros a serem despejados."
